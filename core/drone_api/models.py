@@ -43,7 +43,7 @@ class MedicationModel(models.Model):
     name = models.CharField(max_length=255, null=True, validators=[RegexValidator(r'^[a-zA-Z0-9-_]+$')])
     weight = models.DecimalField(null=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(0.0), MaxValueValidator(500.00)])
     code = models.CharField(max_length=255, null=True, validators=[RegexValidator(r'^[A-Z0-9_]+$')])
-    image = models.CharField(max_length=255, null=True)
+    image = models.ImageField(upload_to='images/%Y/%m/%d/', blank=True, null=True)
     drone = models.ForeignKey(DroneModel, on_delete=models.CASCADE, null=True, blank=True, related_name='medications')
     created_at = models.DateTimeField(auto_now_add=True)
 
