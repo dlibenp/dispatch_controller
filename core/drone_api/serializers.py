@@ -10,7 +10,8 @@ class MedicationSerializer(serializers.ModelSerializer):
 
 
 class DroneSerializer(serializers.ModelSerializer):
+    medications = MedicationSerializer(many=True, read_only=True)
     class Meta:
         model = DroneModel
-        fields = ('id', 'serial_number', 'model', 'weight', 'battery_capacity', 'state', 'created_at')
+        fields = ('id', 'serial_number', 'model', 'weight', 'battery_capacity', 'state', 'medications', 'created_at')
         read_only_fields = ('created_at',)
