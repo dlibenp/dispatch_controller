@@ -101,6 +101,57 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# LOGGING
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'drone_api.log',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'INFO',
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] [%(name)s] [%(redis_host)s:%(redis_port)s] - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+            'formatter': 'verbose',
+        },
+    },
+}
+
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
+REDIS_DB = os.environ.get('REDIS_DB', 0)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -120,7 +171,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'drone_api/static/')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(STATIC_ROOT, 'medication/')
+    os.path.join(STATIC_ROOT, 'drone/')
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'drone_api/media/')
 MEDIA_URL = '/media/'

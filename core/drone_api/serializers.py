@@ -12,8 +12,8 @@ class MedicationSerializer(serializers.ModelSerializer):
         drone_data = attrs.get('drone')
         total_weight = sum(data.weight for data in drone_data.medications.all())
 
-        if (total_weight + attrs.get('weight')) > drone_data.weight:
-            raise serializers.ValidationError("Total weight of medications exceeds total weight of the drone.")
+        if (total_weight + attrs.get('weight')) > drone_data.weight_limit:
+            raise serializers.ValidationError("Total weight of medications exceeds weight limit of the drone.")
         
         return super().validate(attrs)
 
@@ -22,7 +22,7 @@ class DroneSerializer(serializers.ModelSerializer):
     medications = MedicationSerializer(many=True, read_only=True)
     class Meta:
         model = DroneModel
-        fields = ('id', 'serial_number', 'model', 'weight', 'battery_capacity', 'state', 'medications', 'created_at')
+        fields = ('id', 'serial_number', 'model', 'weight_limit', 'battery_capacity', 'state', 'medications', 'created_at')
         read_only_fields = ('created_at',)
     
     def validate(self, attrs):

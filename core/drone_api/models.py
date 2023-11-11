@@ -24,7 +24,7 @@ class DroneModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     serial_number = models.CharField(max_length=100, null=True)
     model = models.CharField(max_length=20, choices=ModelEnum.choices, default=ModelEnum.LIGHT,)
-    weight = models.DecimalField(null=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(0.0), MaxValueValidator(500.00)])
+    weight_limit = models.DecimalField(null=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(0.0), MaxValueValidator(500.00)])
     battery_capacity = models.IntegerField(null=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
     state = models.CharField(max_length=20, choices=StateEnum.choices, default=StateEnum.IDLE,)
     created_at = models.DateTimeField(auto_now_add=True)
