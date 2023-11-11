@@ -45,7 +45,7 @@ Development of a service via REST API that allows the management of medication l
    python manage.py runserver
    ```
 
-### ⚡ URL Use
+### ⚡ URL Use: Django Rest Framework uses a default swagger that you can use just by calling the basic url <localhost:8000>
 ```shell
     admin/
     ^api/medication/$ [name='medication-list']
