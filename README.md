@@ -139,9 +139,7 @@ python -m unittest tests/tests.py
 ```
 
 ### ⚡ Create docker image:
-1. ```shell
-   docker build -t drone-delivery .
-   ```
-2. ```shell
-   docker run -d -p 8000:8000 drone-delivery
-   ```
+```shell
+docker build -t drone-delivery .
+docker run -d -p 8000:8000 drone-delivery
+```
