@@ -6,7 +6,12 @@ Development of a service via REST API that allows the management of medication l
 
 
 **IMPORTANT**
-> La app esta desarrollada sobre python Django y Django Rest Framework, todos los modulos fueron instalados sobre un entorno vistual de python 3.8.10 en Ubuntu 20.04.
+> The app is developed on Python Django and Django Rest Framework, all modules were installed on a Python 3.8.10 environment on Ubuntu 20.04.
+> A scheduled task was created that runs every hour, it evaluates the status of the drone's battery and saves the values ​​in a log file (drone_api.log).
+> A database-cache connection (Redis) was created that contain with data of an example drone would be saved to be inserted at the beginning of the API.
+> A Docker-file was created for future deployment in production.
+> Database for testing we use Sqlite3 and database for production Postgresql or Mysql.
+> For information on the logic followed, refer to Drones.pdf.
 
 ### ⚡ Install
 1. Create dir:
@@ -40,23 +45,91 @@ Development of a service via REST API that allows the management of medication l
    python manage.py runserver
    ```
 
+### ⚡ URL Use
+```shell
+    admin/
+    ^api/medication/$ [name='medication-list']
+    ^api/medication\.(?P<format>[a-z0-9]+)/?$ [name='medication-list']
+    ^api/medication/(?P<pk>[^/.]+)/$ [name='medication-detail']
+    ^api/medication/(?P<pk>[^/.]+)\.(?P<format>[a-z0-9]+)/?$ [name='medication-detail']
+    ^api/drone/$ [name='drone-list']
+    ^api/drone\.(?P<format>[a-z0-9]+)/?$ [name='drone-list']
+    ^api/drone/(?P<pk>[^/.]+)/$ [name='drone-detail']
+    ^api/drone/(?P<pk>[^/.]+)\.(?P<format>[a-z0-9]+)/?$ [name='drone-detail']
+    ^$ [name='api-root']
+    ^\.(?P<format>[a-z0-9]+)/?$ [name='api-root']
+    ^media/(?P<path>.*)$
+```
+
 ### ⚡ Use
 ```shell
-curl -X 'POST' 'https://localhost:8000/solution?criterion=completed'
--H 'accept: application/json'
--H 'Content-Type: application/json'
--d '{
-      "orders": [
-         {"id": "091416a6-e6d9-4212-8d0f-8f45d2a6e3f3", "item": "New Order 1", "quantity": 2,
-            "price": 2.5, "status": "completed", "created_at": "2023-10-07T19:41:12.294211"},
-         {"id": "091416a6-e6d9-4212-8d0f-8f45d2a6e3f4", "item": "New Order 2", "quantity": 4,
-            "price": 1.5, "status": "pending", "created_at": "2023-10-07T19:41:12.294211"},
-         {"id": "091416a6-e6d9-4212-8d0f-8f45d2a6e3f5", "item": "New Order 3", "quantity": 2,
-            "price": 0.5, "status": "canceled", "created_at": "2023-10-07T19:41:12.294211"},
-         {"id": "091416a6-e6d9-4212-8d0f-8f45d2a6e3f6", "item": "New Order 4", "quantity": 3,
-            "price": 3.5, "status": "completed", "created_at": "2023-10-07T19:41:12.294211"}
-      ]
+curl -X POST http://localhost:8000/api/drone/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json' 
+    -d '{
+       "serial_number": "12345",
+       "model": "Lightweight",
+       "weight_limit": 500,
+       "battery_capacity": 100,
+       "state": "IDLE"
    }'
+
+curl http://localhost:8000/api/drone/<ID>/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json'
+
+curl http://localhost:8000/api/drone/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json'
+
+curl -X PUT http://localhost:8000/api/drone/<ID>/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json' 
+    -d '{
+       "serial_number": "12345",
+       "model": "Lightweight",
+       "weight_limit": 300,
+       "battery_capacity": 20,
+       "state": "IDLE"
+   }'
+
+curl -X DELETE http://localhost:8000/api/drone/<ID>/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json'
+
+curl -X POST http://localhost:8000/api/medication/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json' 
+    -d '{
+       "name": "abc-123_AAA",
+       "weight": 200,
+       "code": "ABC_0099",
+       "image": <Image>,
+       "drone": "<ID>"
+   }'
+
+curl http://localhost:8000/api/medication/<ID>/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json'
+
+curl http://localhost:8000/api/medication/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json'
+
+curl -X PUT http://localhost:8000/api/medication/<ID>/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json' 
+    -d '{
+       "name": "abc-123_ZZZ",
+       "weight": 200,
+       "code": "ABC_8899",
+       "image": <Image>,
+       "drone": "<ID>"
+   }'
+
+curl -X DELETE http://localhost:8000/api/medication/<ID>/ 
+    -H 'Accept: application/json' 
+    -H 'Content-Type: application/json'
 ```
 
 ### ⚡ Test:
@@ -67,8 +140,8 @@ python -m unittest tests/tests.py
 
 ### ⚡ Create docker image:
 1. ```shell
-   docker build -t fastapi-test .
+   docker build -t drone-delivery .
    ```
 2. ```shell
-   docker run -d -p 8000:8000 fastapi-test
+   docker run -d -p 8000:8000 drone-delivery
    ```
