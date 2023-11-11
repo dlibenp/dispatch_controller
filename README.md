@@ -61,7 +61,8 @@ curl -X 'POST' 'https://localhost:8000/solution?criterion=completed'
 
 ### ⚡ Test:
 ```shell
-python -m unittest test/test_order.py
+pytest
+python -m unittest tests/tests.py
 ```
 
 ### ⚡ Create docker image:
