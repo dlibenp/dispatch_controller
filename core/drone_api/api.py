@@ -25,7 +25,7 @@ class DroneViewSet(viewsets.ModelViewSet):
             else:
                 data = {
                     'serial_number': '12345',
-                    'model': 'LIGHT',
+                    'model': 'Lightweight',
                     'weight_limit': 500,
                     'battery_capacity': 100,
                     'state': 'IDLE'
