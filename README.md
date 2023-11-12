@@ -62,6 +62,7 @@ Development of a service via REST API that allows the management of medication l
 ```
 
 ### ⚡ Use
+1. Query - Create Drone:
 ```shell
 curl -X POST http://localhost:8000/api/drone/ 
     -H 'Accept: application/json' 
@@ -73,15 +74,21 @@ curl -X POST http://localhost:8000/api/drone/
        "battery_capacity": 100,
        "state": "IDLE"
    }'
-
+```
+1. Query - Get Drone by ID:
+```shell
 curl http://localhost:8000/api/drone/<ID>/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json'
-
+```
+1. Query - Get all Drones:
+```shell
 curl http://localhost:8000/api/drone/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json'
-
+```
+1. Query - Update Drone by ID:
+```shell
 curl -X PUT http://localhost:8000/api/drone/<ID>/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json' 
@@ -92,11 +99,15 @@ curl -X PUT http://localhost:8000/api/drone/<ID>/
        "battery_capacity": 20,
        "state": "IDLE"
    }'
-
+```
+1. Query - Delete Drone by ID:
+```shell
 curl -X DELETE http://localhost:8000/api/drone/<ID>/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json'
-
+```
+1. Query - Create Medication:
+```shell
 curl -X POST http://localhost:8000/api/medication/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json' 
@@ -107,15 +118,21 @@ curl -X POST http://localhost:8000/api/medication/
        "image": <Image>,
        "drone": "<ID>"
    }'
-
+```
+1. Query - Get Medication by ID:
+```shell
 curl http://localhost:8000/api/medication/<ID>/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json'
-
+```
+1. Query - Get all Medications:
+```shell
 curl http://localhost:8000/api/medication/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json'
-
+```
+1. Query - Update Medication by ID:
+```shell
 curl -X PUT http://localhost:8000/api/medication/<ID>/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json' 
@@ -126,7 +143,9 @@ curl -X PUT http://localhost:8000/api/medication/<ID>/
        "image": <Image>,
        "drone": "<ID>"
    }'
-
+```
+1. Query - Delete Medication by ID:
+```shell
 curl -X DELETE http://localhost:8000/api/medication/<ID>/ 
     -H 'Accept: application/json' 
     -H 'Content-Type: application/json'
